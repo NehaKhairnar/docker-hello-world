@@ -1,0 +1,82 @@
+-----------------------Build Details-----------------------------
+Github link :
+* remote origin
+  Fetch URL: https://github.com/NehaKhairnar/docker-hello-world.git
+  Push  URL: https://github.com/NehaKhairnar/docker-hello-world.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (up to date)
+--------------------------------------
+Branch :
+* master
+--------------------------------------
+Tag :
+v1.0
+--------------------------------------
+Recent Commits :
+commit d29cef1ff55bfd592998642143ad62a5fb1270ec
+Author: Fernando <fermayo@gmail.com>
+Date:   Thu Mar 6 12:11:59 2014 +0100
+
+    updated base image to tutum/apache-php
+
+diff --git a/Dockerfile b/Dockerfile
+index a2d9abb..cc7a07d 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -1,18 +1,8 @@
+-FROM ubuntu:quantal
++FROM tutum/apache-php:latest
+ MAINTAINER Fernando Mayo <fernando@tutum.co>
+ 
+-# Install packages
+-RUN apt-get update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get -y install supervisor git apache2 libapache2-mod-php5
+-RUN git clone https://github.com/fermayo/hello-world-php.git /app
+-
+-# Add image configuration and scripts
+-ADD https://raw.github.com/tutumcloud/docker-hello-world/master/start.sh /start.sh
+-ADD https://raw.github.com/tutumcloud/docker-hello-world/master/run.sh /run.sh
+-RUN chmod 755 /start.sh && chmod 755 /run.sh
+-ADD https://raw.github.com/tutumcloud/docker-hello-world/master/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+-
+-# Configure /app folder
+-RUN mkdir -p /app && rm -fr /var/www && ln -s /app /var/www
++# Install sample application
++RUN rm -fr /app && git clone https://github.com/fermayo/hello-world-php.git /app
+ 
+ EXPOSE 80
+ CMD ["/run.sh"]
+diff --git a/run.sh b/run.sh
+deleted file mode 100644
+index 5dab4e0..0000000
+--- a/run.sh
++++ /dev/null
+@@ -1,2 +0,0 @@
+-#!/bin/bash
+-exec supervisord -n
+diff --git a/start.sh b/start.sh
+deleted file mode 100644
+index 5dccd01..0000000
+--- a/start.sh
++++ /dev/null
+@@ -1,3 +0,0 @@
+-#!/bin/bash
+-source /etc/apache2/envvars
+-exec apache2 -D FOREGROUND
+diff --git a/supervisord-apache2.conf b/supervisord-apache2.conf
+deleted file mode 100644
+index e361f4a..0000000
+--- a/supervisord-apache2.conf
++++ /dev/null
+@@ -1,5 +0,0 @@
+-[program:apache2]
+-command=/start.sh
+-numprocs=1
+-autostart=true
+-autorestart=true
+\ No newline at end of file
+--------------------------------------
